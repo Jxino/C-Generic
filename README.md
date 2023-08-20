@@ -8,12 +8,14 @@ Generic Map과 Generic List에는 Data Type을 담을 수 있습니다.
 List는 ArrayList이고 Map은 HashMap입니다.
 Generic하게 모든 Data Type을 수용하기 위해서 C언어의 void*로 Data를 저장합니다.
 Generic한 Data Type을 수용하기 위해서 생성자에서 Data Type의 size와 Data Type에 대한 description을 문자열로 받습니다.
+
 Data Type description은 "i"(int), "c"(char), "s"(string), "p"(pointer)와 같이 줄 수 있습니다.
 "s"(string)의 경우 Generic Map과 List 속에 string 복사본을 별도로 가지고 있습니다.
+
 예를 들어 Integer List는 ```list* list = L_CREATE(sizeof(int), "i")```와 같이 생성할 수 있습니다.
 char를 key로 하고 int를 value로 하는 Map은 ```Map* map = M_CREATE(sizeof(char), "c", sizeof(int), "i")```로 생성할 수 있습니다. 
 
-## 사용법
+## API 함수들
 
 Generic List에서 제공하는 API 함수들은 다음과 같습니다.
 * L_CREATE(size, desc) -- list 생성
@@ -41,3 +43,57 @@ Generic Map이 제공하는 API 함수들은 다음과 같습니다.
 * M_DEL(map, key) -- map에서 key에 해당하는 항목 지우기
 * M_COUNT(map) -- map이 포함하는 key, value 쌍의 개수
 * M_KEYS(map) -- map에 있는 key의 list를 가져오기
+
+## 사용 예시
+
+### Integer List를 생성 및 사용
+```c
+    List* list = L_CREATE(sizeof(int), "i");
+    int x = 3;
+    L_ADD(list, x); // x should be an lvalue
+    L_ADD(list, 7); // !ERROR! You cannot add this way
+    int y = 7;
+    L_ADD(list, y); // You should add this way. element needs to be a variable that can be pointed by a pointer
+    L_DESTROY(list);  
+```
+
+### Integer List에서 검색, 참조, 삭제
+```c
+    List* list = L_CREATE(sizeof(int), "i");
+    int x = 9;
+    int y = 3;
+    int z = 7;
+    L_ADD(list, x);
+    L_ADD(list, y);
+    L_ADD(list, z);
+    int w = 6;
+    int idx = L_FIND(list, w); // not found, idx == -1;
+    w = 7;
+    idx = L_FIND(list, w); // found, idx == 2;
+    int r; L_RETR(list, 1, &r); // retrieve second item, r == 3
+    L_DELETE(list, 1);
+    size_t count = L_COUNT(list); // count == 2
+    int u = 5;
+    L_INSERT(list, 1, u); // list = [9, 5, 7]
+    L_REMOVE(list, 0, &r); // remove first element and fetch into r. r == 9
+    if (L_HAS(list, r)) {
+        assert(0); // r (9) was already removed
+    }
+    L_DESTROY(list); 
+```
+
+### Integer List를 sort하기
+
+```c
+
+
+```
+
+### String List에 대한 연산
+
+### Structure의 Pointer를 담고 있는 List
+
+### Structure 자체
+
+### Int key, Char value의 Map 생성하기
+
