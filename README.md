@@ -3,6 +3,16 @@
 이 프로젝트는 C언어에서 쓸 수 있는 Generic Map과 Generic List를 제공합니다.
 Generic Map과 Generic List에는 Data Type을 담을 수 있습니다.
 
+## 자료구조에 대한 설명
+
+List는 ArrayList이고 Map은 HashMap입니다.
+Generic하게 모든 Data Type을 수용하기 위해서 C언어의 void*로 Data를 저장합니다.
+Generic한 Data Type을 수용하기 위해서 생성자에서 Data Type의 size와 Data Type에 대한 description을 문자열로 받습니다.
+Data Type description은 "i"(int), "c"(char), "s"(string), "p"(pointer)와 같이 줄 수 있습니다.
+"s"(string)의 경우 Generic Map과 List 속에 string 복사본을 별도로 가지고 있습니다.
+예를 들어 Integer List는 ```list* list = L_CREATE(sizeof(int), "i")```와 같이 생성할 수 있습니다.
+char를 key로 하고 int를 value로 하는 Map은 ```Map* map = M_CREATE(sizeof(char), "c", sizeof(int), "i")```로 생성할 수 있습니다. 
+
 ## 사용법
 
 Generic List에서 제공하는 API 함수들은 다음과 같습니다.
