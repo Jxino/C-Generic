@@ -1,52 +1,83 @@
 # Generic Data Structures in C
 
-이 프로젝트는 C언어에서 쓸 수 있는 Generic Map과 Generic List를 제공합니다.
-Generic Map과 Generic List에는 Data Type을 담을 수 있습니다.
+This project provides Generic Map and Generic List implementations that can be used in the C programming language. Generic Map and Generic List are capable of storing various data types.
 
-## 자료구조에 대한 설명
+## Description of Data Structures
+The List is an ArrayList, and the Map is a HashMap.
+To generically accommodate all data types, data is stored in C's void* type.
+To support generic data types, the constructor accepts the size of the data type and a description of the data type as a string.
 
-List는 ArrayList이고 Map은 HashMap입니다.
-Generic하게 모든 Data Type을 수용하기 위해서 C언어의 void*로 Data를 저장합니다.
-Generic한 Data Type을 수용하기 위해서 생성자에서 Data Type의 size와 Data Type에 대한 description을 문자열로 받습니다.
+Data type descriptions can include "i" (int), "c" (char), "s" (string), "p" (pointer), and so on.
+In the case of "s" (string), Generic Map and List store a separate copy of the string.
 
-Data Type description은 "i"(int), "c"(char), "s"(string), "p"(pointer)와 같이 줄 수 있습니다.
-"s"(string)의 경우 Generic Map과 List 속에 string 복사본을 별도로 가지고 있습니다.
+For example, you can create an Integer List as follows: ```List* list = L_CREATE(sizeof(int), "i")```.
+A Map with a char key and an int value like this: ```Map* map = M_CREATE(sizeof(char), "c", sizeof(int), "i")```.
 
-예를 들어 Integer List는 ```list* list = L_CREATE(sizeof(int), "i")```와 같이 생성할 수 있습니다.
-char를 key로 하고 int를 value로 하는 Map은 ```Map* map = M_CREATE(sizeof(char), "c", sizeof(int), "i")```로 생성할 수 있습니다. 
+## API Functions
 
-## API 함수들
+Here are the API functions provided for Generic Lists:
 
-Generic List에서 제공하는 API 함수들은 다음과 같습니다.
-* L_CREATE(size, desc) -- list 생성
-* L_DESTROY(list) -- list 소멸
-* L_ADD(list, elem) -- list에 element 추가
-* L_FIND(list, elem) -- list에서 element의 위치를 찾기
-* L_REMOVE(list, idx, p_elem_removed) -- list에서 idx번째 element를 지우고 지워진 element를 받아 오기
-* L_RETR(list, idx, p_elem_result) -- list에서 idx번째 element를 받아 오기
-* L_INSERT(list, idx, elem) -- list의 idx 위치에 element를 insert하기
-* L_HAS(list, elem) -- list가 element를 포함하고 있는지 여부 확인
-* L_DELETE(list, idx) -- list의 idx번째 element 지우기
-* L_COUNT(list) -- list가 가지고 있는 element 개수
-* L_SORT(list, compare_f) -- list sort하기
+* `L_CREATE(size, desc)` - Create a list.
+* `L_DESTROY(list)` - Destroy a list.
+* `L_ADD(list, elem)` - Add an element to the list.
+* `L_FIND(list, elem)` - Find the position of an element in the list.
+* `L_REMOVE(list, idx, p_elem_removed)` - Remove the element at index `idx` from the list and retrieve the removed element.
+* `L_RETR(list, idx, p_elem_result)` - Retrieve the element at index `idx` from the list.
+* `L_INSERT(list, idx, elem)` - Insert an element at index `idx` in the list.
+* `L_HAS(list, elem)` - Check if the list contains a specific element.
+* `L_DELETE(list, idx)` - Delete the element at index `idx` from the list.
+* `L_COUNT(list)` - Get the number of elements in the list.
+* `L_SORT(list, compare_f)` - Sort the list using a comparison function.
 
-Generic Map이 제공하는 API 함수들은 다음과 같습니다.
-* M_CREATE(K_size, K_desc, V_size, V_desc) -- generic map 생성
-* M_DESTROY(map) -- map 소멸
-* M_PUT(map, key, value) -- map에 key, value 쌍 추가하기
-* M_RETR(map, key, p_value) -- map에서 key에 해당하는 value를 읽어 오기
-* M_HAS(map, key) -- map이 key를 가지고 있는지 확인
-* M_ITER(map) -- map에 쓸 수 있는 iterator 생성
-* I_NEXT(iter) -- iterator를 다음으로 이동
-* I_VALUE(iter, p_value) -- iterator에서 value를 읽어 오기
-* I_KEY(iter, p_key) -- iterator에서 key를 읽어 오기
-* M_DEL(map, key) -- map에서 key에 해당하는 항목 지우기
-* M_COUNT(map) -- map이 포함하는 key, value 쌍의 개수
-* M_KEYS(map) -- map에 있는 key의 list를 가져오기
+And here are the API functions provided for Generic Maps:
 
-## 사용 예시
+* `M_CREATE(K_size, K_desc, V_size, V_desc)` - Create a generic map.
+* `M_DESTROY(map)` - Destroy a map.
+* `M_PUT(map, key, value)` - Add a key-value pair to the map.
+* `M_RETR(map, key, p_value)` - Retrieve the value associated with a key from the map.
+* `M_HAS(map, key)` - Check if the map contains a specific key.
+* `M_ITER(map)` - Create an iterator for the map.
+* `I_NEXT(iter)` - Move the iterator to the next item.
+* `I_VALUE(iter, p_value)` - Retrieve the value from the iterator.
+* `I_KEY(iter, p_key)` - Retrieve the key from the iterator.
+* `M_DEL(map, key)` - Delete the item associated with a key from the map.
+* `M_COUNT(map)` - Get the number of key-value pairs in the map.
+* `M_KEYS(map)` - Get a list of keys in the map.
 
-### Integer List를 생성 및 사용
+## API Functions
+
+Here are the API functions provided by Generic List:
+
+- `L_CREATE(size, desc)` -- Create a list.
+- `L_DESTROY(list)` -- Destroy the list.
+- `L_ADD(list, elem)` -- Add an element to the list.
+- `L_FIND(list, elem)` -- Find the position of an element in the list.
+- `L_REMOVE(list, idx, p_elem_removed)` -- Remove the element at index `idx` from the list and retrieve the removed element.
+- `L_RETR(list, idx, p_elem_result)` -- Retrieve the element at index `idx` from the list.
+- `L_INSERT(list, idx, elem)` -- Insert an element at index `idx` in the list.
+- `L_HAS(list, elem)` -- Check if the list contains an element.
+- `L_DELETE(list, idx)` -- Delete the element at index `idx` in the list.
+- `L_COUNT(list)` -- Get the number of elements in the list.
+- `L_SORT(list, compare_f)` -- Sort the list.
+
+Here are the API functions provided by Generic Map:
+
+- `M_CREATE(K_size, K_desc, V_size, V_desc)` -- Create a generic map.
+- `M_DESTROY(map)` -- Destroy the map.
+- `M_PUT(map, key, value)` -- Add a key-value pair to the map.
+- `M_RETR(map, key, p_value)` -- Read the value associated with a key from the map.
+- `M_HAS(map, key)` -- Check if the map contains a key.
+- `M_ITER(map)` -- Create an iterator for the map.
+- `I_NEXT(iter)` -- Move the iterator to the next element.
+- `I_VALUE(iter, p_value)` -- Read the value from the iterator.
+- `I_KEY(iter, p_key)` -- Read the key from the iterator.
+- `M_DEL(map, key)` -- Delete an item associated with a key from the map.
+- `M_COUNT(map)` -- Get the number of key-value pairs in the map.
+- `M_KEYS(map)` -- Get a list of keys in the map.
+
+## Usage Examples
+
+### Integer List
 ```c
     List* list = L_CREATE(sizeof(int), "i");
     int x = 3;
@@ -57,7 +88,7 @@ Generic Map이 제공하는 API 함수들은 다음과 같습니다.
     L_DESTROY(list);  
 ```
 
-### Integer List에서 검색, 참조, 삭제
+### Integer List
 ```c
     List* list = L_CREATE(sizeof(int), "i");
     int x = 9;
@@ -82,18 +113,58 @@ Generic Map이 제공하는 API 함수들은 다음과 같습니다.
     L_DESTROY(list); 
 ```
 
-### Integer List를 sort하기
+### Sorting an Integer List
+
+To perform sorting, you need to provide a function that compares two elements. Since it's a Generic List, create a `compare` function that accepts `void*` as an argument.
 
 ```c
-
+    List* list = L_CREATE(sizeof(int), "i");
+    int x = 9;
+    int y = 3;
+    int z = 7;
+    L_ADD(list, x);
+    L_ADD(list, y);
+    L_ADD(list, z);
+    int comp(void* pa, void* pb) { // 
+        return *((int*) pa) - *((int*) pb); 
+    }
+    L_SORT(list, comp);
+    L_DESTROY(list);
 
 ```
 
-### String List에 대한 연산
+### Operations on String List
+TBD.
+### List of Struct Pointer
+TBD.
+### List of Struct
+TBD.
+### Creating Map of Char key, Int value
 
-### Structure의 Pointer를 담고 있는 List
-
-### Structure 자체
-
-### Int key, Char value의 Map 생성하기
-
+```c
+    Map* map = M_CREATE(sizeof(char), "c", sizeof(int), "i");
+    char k1 = 'A'; int v1 = 3;
+    M_PUT(map, k1, v1);
+    char k2 = 'C'; int v2 = 7;
+    M_PUT(map, k2, v2);
+    char k3 = 'C'; int v3 = 9;
+    M_PUT(map, k3, v3);
+    char k4 = 'B'; int v4 = 1;
+    M_PUT(map, k4, v4);
+    size_t count = M_COUNT(map); // count == 3
+    int r; M_RETR(map, k2, &r); // r == 7
+    M_DEL(map, k1); // delete
+    List* keys = M_KEYS(map);
+    size_t count2 = L_COUNT(keys); // count2 == 2
+    L_DESTROY(keys);
+    if (M_HAS(map, k1)) {
+        assert(0);
+    }
+    Iterator* iter = M_ITER(map);
+    while (I_NEXT(iter) != NULL) {
+        char key; I_KEY(iter, &key);
+        int value; I_VALUE(iter, &value);
+        printf("key = %c, value = %d\n", key, value); 
+    }
+    M_DESTROY(map);
+```
